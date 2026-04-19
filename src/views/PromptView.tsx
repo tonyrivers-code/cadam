@@ -26,6 +26,30 @@ export function PromptView() {
   const queryClient = useQueryClient();
 
   const [type, setType] = useState<'parametric' | 'creative'>('parametric');
+  const [selectedIdea, setSelectedIdea] = useState<string>('');
+
+  const IDEAS = [
+    {
+      label: 'Phone stand',
+      prompt: 'A simple adjustable phone stand with a 15° tilt',
+    },
+    {
+      label: 'Gear',
+      prompt: 'A parametric spur gear with 20 teeth and 2mm module',
+    },
+    {
+      label: 'Plant pot',
+      prompt: 'A round plant pot with drainage holes at the bottom',
+    },
+    {
+      label: 'Cable clip',
+      prompt: 'A small cable management clip that mounts on a desk edge',
+    },
+    {
+      label: 'Keychain',
+      prompt: 'A rectangular keychain tag with a hole for the ring',
+    },
+  ];
 
   const [model, setModel] = useState<Model>('google/gemini-3.1-pro-preview');
 
@@ -208,13 +232,36 @@ export function PromptView() {
           <div className="mx-auto flex max-w-3xl flex-col items-center justify-center">
             <h1
               className={cn(
-                'mb-8 text-center text-2xl font-medium text-adam-text-primary md:text-3xl lg:text-4xl',
+                'mb-6 text-center text-2xl font-medium text-adam-text-primary md:text-3xl lg:text-4xl',
                 'motion-safe:transition-opacity motion-safe:duration-1000 motion-safe:ease-out',
                 isLoaded ? 'opacity-100' : 'opacity-0',
               )}
             >
               {getTimeBasedGreeting}!
             </h1>
+            <div
+              className={cn(
+                'mb-6 flex flex-wrap justify-center gap-2',
+                'motion-safe:transition-opacity motion-safe:duration-1000 motion-safe:ease-out',
+                isLoaded ? 'opacity-100' : 'opacity-0',
+              )}
+            >
+              {IDEAS.map((idea) => (
+                <button
+                  key={idea.label}
+                  onClick={() => {
+                    if (!user) {
+                      navigate('/signin');
+                      return;
+                    }
+                    setSelectedIdea(idea.prompt);
+                  }}
+                  className="rounded-full border border-adam-neutral-700 bg-adam-neutral-800 px-3 py-1.5 text-sm text-adam-text-secondary transition-colors duration-200 hover:border-adam-neutral-400 hover:text-adam-text-primary"
+                >
+                  {idea.label}
+                </button>
+              ))}
+            </div>
           </div>
           <div className="flex w-full flex-col items-center">
             <div className="w-full max-w-3xl space-y-4 pb-12">
@@ -241,6 +288,7 @@ export function PromptView() {
                   showPromptGenerator={true}
                   showFullLabels={true}
                   onTypeChange={handleTypeChange}
+                  externalInput={selectedIdea}
                 />
               </SelectedItemsContext.Provider>
               <div className="relative">

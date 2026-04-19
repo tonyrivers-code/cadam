@@ -74,6 +74,7 @@ interface TextAreaChatProps {
   showPromptGenerator?: boolean;
   showFullLabels?: boolean; // Controls whether to show full text labels on buttons
   onTypeChange?: (type: 'parametric' | 'creative') => void;
+  externalInput?: string;
   conversation: {
     id: string;
     user_id: string;
@@ -472,11 +473,19 @@ function TextAreaChat({
   showPromptGenerator = false,
   showFullLabels = false,
   onTypeChange,
+  externalInput,
   conversation,
 }: TextAreaChatProps) {
   const [isFocused, setIsFocused] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [input, setInput] = useState('');
+
+  useEffect(() => {
+    if (externalInput !== undefined && externalInput !== '') {
+      setInput(externalInput);
+      textareaRef.current?.focus();
+    }
+  }, [externalInput]);
   const [isDragging, setIsDragging] = useState(false);
   const [isDragHover, setIsDragHover] = useState(false);
   const [isGeneratingPrompt, setIsGeneratingPrompt] = useState(false);
