@@ -30,6 +30,11 @@ export function PromptView() {
 
   const IDEAS = [
     {
+      label: 'PO-33 stand',
+      prompt:
+        'A 45-degree angled desk stand for a Teenage Engineering Pocket Operator. The device is roughly 100mm wide, 55mm tall and 8mm thick. The stand has a bottom ledge to support the device, side walls to keep it in place, and a flat base so it sits stably on a desk.',
+    },
+    {
       label: 'Phone stand',
       prompt: 'A simple adjustable phone stand with a 15° tilt',
     },
